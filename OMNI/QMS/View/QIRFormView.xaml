@@ -355,6 +355,33 @@
                     </Button>
 
 
+                    <Label Content="Diamond #"
+                           Foreground="GhostWhite"
+                           FontWeight="Bold"
+                           FontSize="18"/>
+
+                    <TextBox Text="{Binding Qir.CurrentRevision.DiamondNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             FontSize="16"
+                             MinWidth="150"
+                             MaxWidth="300"
+                             MaxLength="30"
+                             Margin="5"
+                             TabIndex="1"
+                             AcceptsReturn="False"
+                             ToolTip="Enter the part number."
+                             Style="{DynamicResource OptionalTextBox}"/>
+
+                </StackPanel>
+
+                <!--    Row 4   -->
+
+                <StackPanel Grid.Row="4"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            IsEnabled="{Binding ReadOnly}"
+                            Visibility="{Binding Qir.IDNumber, Converter={StaticResource QIRIDNumbertoVisConverter}}">
+
                     <Label Content="NCM"
                            Foreground="GhostWhite"
                            FontWeight="Bold"
@@ -387,32 +414,154 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
 
+                    <Label Content="Type"
+                           Foreground="GhostWhite"
+                           FontWeight="Bold"
+                           FontSize="18"/>
+
+                    <ComboBox ItemsSource="{Binding Qir.CauseList}"
+                              SelectedItem="{Binding Qir.CurrentRevision.Cause}"
+                              Margin="5"
+                              Width="175"
+                              ToolTip="Select or Enter the Cause"
+                              FontWeight="Bold"
+                              FontSize="16"
+                              TabIndex="6"
+                              Style="{DynamicResource RequiredComboBox}"/>
+
                 </StackPanel>
 
-                <!--    Row 4   -->
+                <!--    Row 5   -->
 
-                <StackPanel Grid.Row="4"
+                <StackPanel Grid.Row="5"
                             Orientation="Horizontal"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             IsEnabled="{Binding ReadOnly}"
                             Visibility="{Binding Qir.IDNumber, Converter={StaticResource QIRIDNumbertoVisConverter}}">
 
-                    <Label Content="Diamond #"
+                    <Label Content="Origin"
                            Foreground="GhostWhite"
                            FontWeight="Bold"
                            FontSize="18"/>
 
-                    <TextBox Text="{Binding Qir.CurrentRevision.DiamondNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    <ComboBox ItemsSource="{Binding Qir.WorkCenterList}"
+                              SelectedValue="{Binding Qir.CurrentRevision.Origin}"
+                              SelectedValuePath="IDNumber"
+                              TextSearch.TextPath="IDNumber"
+                              Margin="5"
+                              Width="405"
+                              ToolTip="Select or Enter which work center the defect was found at."
+                              FontWeight="Bold"
+                              FontSize="16"                           
+                              Style="{DynamicResource RequiredComboBox}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="({0})  {1}">
+                                            <Binding Path="IDNumber"/>
+                                            <Binding Path="Name"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <Label Content="Material Lost"
+                           Foreground="GhostWhite"
+                           FontWeight="Bold"
+                           FontSize="18"/>
+
+                    <TextBox Text="{Binding Qir.Lost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              FontSize="16"
-                             MinWidth="150"
-                             MaxWidth="300"
-                             MaxLength="30"
+                             Width="50"
                              Margin="5"
-                             TabIndex="1"
+                             TabIndex="3"
                              AcceptsReturn="False"
                              ToolTip="Enter the part number."
-                             Style="{DynamicResource OptionalTextBox}"/>
+                             Style="{DynamicResource RequiredActiveTextBox}"/>
+
+                </StackPanel>
+
+                <!--    Row 6   -->
+
+                <StackPanel Grid.Row="6"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            IsEnabled="{Binding ReadOnly}"
+                            Visibility="{Binding Qir.IDNumber, Converter={StaticResource QIRIDNumbertoVisConverter}}">
+
+                    <Label Content="*"
+                           Foreground="DarkRed"
+                           FontWeight="Bold"
+                           FontSize="18"
+                           Padding="0"/>
+
+                    <Label Content="Found"
+                           Foreground="GhostWhite"
+                           FontWeight="Bold"
+                           FontSize="18"/>
+
+                    <ComboBox ItemsSource="{Binding Qir.WorkCenterList}"
+                              SelectedValue="{Binding Qir.Found}"
+                              SelectedValuePath="IDNumber"
+                              TextSearch.TextPath="IDNumber"
+                              Margin="5"
+                              Width="405"
+                              ToolTip="Select or Enter which work center the defect was found at."
+                              FontWeight="Bold"
+                              FontSize="16"                           
+                              Cursor="Hand"
+                              TabIndex="4"
+                              Style="{DynamicResource RequiredComboBox}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="({0})  {1}">
+                                            <Binding Path="IDNumber"/>
+                                            <Binding Path="Name"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <Label Content="*"
+                           Foreground="DarkRed"
+                           FontWeight="Bold"
+                           FontSize="18"
+                           Padding="0"/>
+
+                    <Label Content="PIC"
+                           Foreground="GhostWhite"
+                           FontWeight="Bold"
+                           FontSize="18"/>
+
+                    <ComboBox ItemsSource="{Binding PicCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedValue="{Binding Qir.PIC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              IsEditable="True"
+                              FontSize="16"
+                              Width="170"
+                              Margin="5"
+                              TabIndex="5"
+                              ToolTip="Select or type the main point of contact."
+                              Style="{DynamicResource RequiredComboBox}"/>
+
+                </StackPanel>
+
+                <!--    Row 7   -->
+
+                <StackPanel Grid.Row="7"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            IsEnabled="{Binding ReadOnly}"
+                            Visibility="{Binding Qir.IDNumber, Converter={StaticResource QIRIDNumbertoVisConverter}}">
 
                     <Label Content="Supplier"
                            Foreground="GhostWhite"
@@ -445,154 +594,6 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
 
-                </StackPanel>
-
-                <!--    Row 5   -->
-
-                <StackPanel Grid.Row="5"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsEnabled="{Binding ReadOnly}"
-                        Visibility="{Binding Qir.IDNumber, Converter={StaticResource QIRIDNumbertoVisConverter}}">
-
-                    <Label Content="Origin"
-                       Foreground="GhostWhite"
-                       FontWeight="Bold"
-                       FontSize="18"/>
-
-                    <ComboBox ItemsSource="{Binding Qir.WorkCenterList}"
-                          SelectedValue="{Binding Qir.CurrentRevision.Origin}"
-                          SelectedValuePath="IDNumber"
-                          TextSearch.TextPath="IDNumber"
-                          Margin="5"
-                          Width="405"
-                          ToolTip="Select or Enter which work center the defect was found at."
-                          FontWeight="Bold"
-                          FontSize="16"                           
-                          Style="{DynamicResource RequiredComboBox}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock>
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="({0})  {1}">
-                                            <Binding Path="IDNumber"/>
-                                            <Binding Path="Name"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-
-                    <Label Content="Material Lost"
-                       Foreground="GhostWhite"
-                       FontWeight="Bold"
-                       FontSize="18"/>
-
-                    <TextBox Text="{Binding Qir.Lost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         FontSize="16"
-                         Width="50"
-                         Margin="5"
-                         TabIndex="3"
-                         AcceptsReturn="False"
-                         ToolTip="Enter the part number."
-                         Style="{DynamicResource RequiredActiveTextBox}"/>
-
-                </StackPanel>
-
-                <!--    Row 6   -->
-
-                <StackPanel Grid.Row="6"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsEnabled="{Binding ReadOnly}"
-                        Visibility="{Binding Qir.IDNumber, Converter={StaticResource QIRIDNumbertoVisConverter}}">
-
-                    <Label Content="*"
-                           Foreground="DarkRed"
-                           FontWeight="Bold"
-                           FontSize="18"
-                           Padding="0"/>
-                    
-                    <Label Content="Found"
-                       Foreground="GhostWhite"
-                       FontWeight="Bold"
-                       FontSize="18"/>
-
-                    <ComboBox ItemsSource="{Binding Qir.WorkCenterList}"
-                          SelectedValue="{Binding Qir.Found}"
-                          SelectedValuePath="IDNumber"
-                          TextSearch.TextPath="IDNumber"
-                          Margin="5"
-                          Width="405"
-                          ToolTip="Select or Enter which work center the defect was found at."
-                          FontWeight="Bold"
-                          FontSize="16"                           
-                          Cursor="Hand"
-                          TabIndex="4"
-                          Style="{DynamicResource RequiredComboBox}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock>
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="({0})  {1}">
-                                            <Binding Path="IDNumber"/>
-                                            <Binding Path="Name"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-
-                    <Label Content="*"
-                           Foreground="DarkRed"
-                           FontWeight="Bold"
-                           FontSize="18"
-                           Padding="0"/>
-
-                    <Label Content="PIC"
-                           Foreground="GhostWhite"
-                           FontWeight="Bold"
-                           FontSize="18"/>
-
-                    <TextBox Text="{Binding Qir.PIC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             FontSize="16"
-                             Width="170"
-                             Margin="5"
-                             TabIndex="5"
-                             AcceptsReturn="False"
-                             ToolTip="Enter the part number."
-                             Style="{DynamicResource OptionalTextBox}"/>
-
-                </StackPanel>
-
-                <!--    Row 7   -->
-
-                <StackPanel Grid.Row="7"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        IsEnabled="{Binding ReadOnly}"
-                        Visibility="{Binding Qir.IDNumber, Converter={StaticResource QIRIDNumbertoVisConverter}}">
-
-                    <Label Content="Cause"
-                       Foreground="GhostWhite"
-                       FontWeight="Bold"
-                       FontSize="18"/>
-
-                    <ComboBox ItemsSource="{Binding Qir.CauseList}"
-                          SelectedItem="{Binding Qir.CurrentRevision.Cause}"
-                          Margin="5"
-                          Width="175"
-                          ToolTip="Select or Enter the Cause"
-                          FontWeight="Bold"
-                          FontSize="16"
-                          TabIndex="6"
-                          Style="{DynamicResource RequiredComboBox}"/>
-
                     <Label Content="Disposition"
                        Foreground="GhostWhite"
                        FontWeight="Bold"
@@ -603,7 +604,7 @@
                           SelectedValuePath="Description"
                           DisplayMemberPath="Description"
                           Margin="5"
-                          Width="250"
+                          Width="200"
                           ToolTip="Select or Enter the quality disposition."
                           FontWeight="Bold"
                           TabIndex="7"

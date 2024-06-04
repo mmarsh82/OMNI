@@ -87,7 +87,7 @@ namespace OMNI.ViewModels
                         DashBoardTabControl.WorkSpace.Items.Add(DashBoardTabItem.NewQIR);
                         break;
                     case DashBoardAction.MapForm:
-                        MapForm.TypePDF();
+                        MapForm.PdfForFields();
                         break;
                     case DashBoardAction.CreateWO:
                         DashBoardTabControl.WorkSpace.Items.Add(DashBoardTabItem.NewCMMSWorkOrder);
@@ -123,6 +123,9 @@ namespace OMNI.ViewModels
                     case DashBoardAction.OpenTicket:
                     case DashBoardAction.ClosedTicket:
                         DashBoardTabControl.WorkSpace.AddActiveDataBaseTabItem(cmdAction);
+                        break;
+                    case DashBoardAction.DevTesting:
+                        MapForm.PdfForText();
                         break;
                 }
                 DashBoardTabControl.WorkSpace.SelectedIndex = DashBoardTabControl.WorkSpace.Items.Count > 0

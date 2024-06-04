@@ -16,7 +16,7 @@ namespace OMNI.Helpers
         /// <summary>
         /// Map a pdf from and save the results to a word document.
         /// </summary>
-        public static void TypePDF()
+        public static void PdfForFields()
         {
             try
             {
@@ -55,6 +55,27 @@ namespace OMNI.Helpers
                     else
                     {
                         ExceptionWindow.Show("Unable to Map", "The form you have selected either does not have mappable fields or the fields that are with in the form are corrupt and unreadable.\nPlease Contact IT if you feel you have reached this message in error.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionWindow.Show("Unhandled Exception", ex.Message, ex);
+            }
+        }
+
+        public static void PdfForText()
+        {
+            try
+            {
+                var ofd = new OpenFileDialog { Title = "Map pdf Form", Filter = "Adobe PDF|*.pdf", DefaultExt = "*.pdf", Multiselect = true };
+                ofd.ShowDialog();
+                foreach (string file in ofd.FileNames)
+                {
+                    using (PdfReader reader = new PdfReader(file))
+                    {
+                        var test = reader.AcroForm;
+                        File.WriteAllText("C:\\Users\\uif28100\\OneDrive - Continental AG\\Desktop\\testing.txt", reader.AcroForm.ToString());
                     }
                 }
             }

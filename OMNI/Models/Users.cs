@@ -162,6 +162,26 @@ namespace OMNI.Models
         }
 
         /// <summary>
+        /// List creation for person in charge for QIR forms
+        /// </summary>
+        /// <returns>New PIC string list</returns>
+        public static IList<string> GetQirPICIList()
+        {
+            var _userList = new List<string>();
+            using (SqlCommand cmd = new SqlCommand($@"USE CONTI_MAIN; SELECT CONCAT(em.[Last_Name], ', ', em.[First_Name]) as 'PicName' FROM [dbo].[EM-INIT] em WHERE em.[Pay_Status] = 'A'", App.SqlConAsync))
+            {
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        _userList.Add(reader.GetString(0));
+                    }
+                }
+            }
+            return _userList;
+        }
+
+        /// <summary>
         /// CMMS User Object List Creation
         /// </summary>
         /// <param name="newList">true = new list / false = loaded list</param>

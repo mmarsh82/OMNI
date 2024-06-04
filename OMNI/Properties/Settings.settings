@@ -24,7 +24,7 @@
       <Value Profile="(Default)">smtp.office365.com</Value>
     </Setting>
     <Setting Name="omnitemp" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">\\waxfs001\WAXG-OMNI\OMNI\Application Data\temp\</Value>
+      <Value Profile="(Default)">\\waxfs001\WAXG-OMNI\Application Data\temp\</Value>
     </Setting>
     <Setting Name="CSISupplierNumber" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">1015</Value>

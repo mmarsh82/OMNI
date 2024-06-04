@@ -183,7 +183,7 @@ namespace OMNI
                             //TrainingStatus = true;
                             break;
                         case "m":
-                            Helpers.MapForm.TypePDF();
+                            Helpers.MapForm.PdfForFields();
                             Current.Shutdown();
                             break;
                     }

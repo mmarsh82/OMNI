@@ -6,6 +6,7 @@ using OMNI.QMS.Enumeration;
 using OMNI.QMS.Model;
 using OMNI.ViewModels;
 using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -103,6 +104,8 @@ namespace OMNI.QMS.ViewModel
             }
         }
 
+        public ObservableCollection<string> PicCollection { get; set; }
+
         RelayCommand _formCommand;
         RelayCommand _attachCommand;
         RelayCommand _printCommand;
@@ -124,6 +127,7 @@ namespace OMNI.QMS.ViewModel
             {
                 FormLinks = new ObservableCollection<LinkedForms>(Qir.FormLinkList);
             }
+            PicCollection = new ObservableCollection<string>(Users.GetQirPICIList());
         }
 
         /// <summary>
@@ -140,6 +144,7 @@ namespace OMNI.QMS.ViewModel
             {
                 FormLinks = new ObservableCollection<LinkedForms>(Qir.FormLinkList);
             }
+            Qir.PIC = CurrentUser.GetFullName();
         }
 
         /// <summary>
@@ -160,6 +165,11 @@ namespace OMNI.QMS.ViewModel
             if (FormLinks == null && Qir.FormLinkList != null)
             {
                 FormLinks = new ObservableCollection<LinkedForms>(Qir.FormLinkList);
+            }
+            PicCollection = new ObservableCollection<string>(Users.GetQirPICIList());
+            if (!PicCollection.Contains(Qir.PIC) && !string.IsNullOrEmpty(Qir.PIC))
+            {
+                PicCollection.Add(Qir.PIC);
             }
         }
 
@@ -205,7 +215,20 @@ namespace OMNI.QMS.ViewModel
                     break;
             }
         }
-        public bool FormCommandCanExecute(object parameter) => ReadOnly && parameter != null && Qir != null && (Qir.CurrentRevision?.Shift >= 1 && Qir.CurrentRevision?.Shift <= 3) && !string.IsNullOrEmpty(Qir.WONumber) && !string.IsNullOrEmpty(Qir.CurrentRevision?.LotNumber) && Qir.CurrentRevision?.NCMCode > 0 && Qir.CurrentRevision?.Origin > 0 && Qir.CurrentRevision?.MaterialLost >= 0 && Qir.Found > 0 && !string.IsNullOrEmpty(Qir.CurrentRevision?.Cause) && Qir.CurrentRevision?.Disposition != null;
+        public bool FormCommandCanExecute(object parameter) => 
+            ReadOnly && parameter != null
+            && Qir != null
+            && (Qir.CurrentRevision?.Shift >= 1
+            && Qir.CurrentRevision?.Shift <= 3)
+            && !string.IsNullOrEmpty(Qir.WONumber)
+            && !string.IsNullOrEmpty(Qir.CurrentRevision?.LotNumber)
+            && Qir.CurrentRevision?.NCMCode > 0
+            && Qir.CurrentRevision?.Origin > 0
+            && Qir.CurrentRevision?.MaterialLost >= 0
+            && Qir.Found > 0
+            && !string.IsNullOrEmpty(Qir.CurrentRevision?.Cause)
+            && Qir.CurrentRevision?.Disposition != null
+            && !string.IsNullOrEmpty(Qir.PIC);
 
         #endregion
 

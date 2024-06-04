@@ -81,14 +81,16 @@
                        FontWeight="Bold"
                        FontSize="22"/>
 
-                <Label Content="{Binding qir.Submitter}"
-                       ContentStringFormat="Submitted By {0}"
-                       Margin="10,0,0,0"
-                       Foreground="WhiteSmoke"
-                       FontWeight="Bold"
-                       FontSize="22"/>
-
             </StackPanel>
+
+            <Label Grid.Row="0"
+                   Content="{Binding Qir.PIC}"
+                   ContentStringFormat="Point of contact: {0}"
+                   Margin="0,0,10,0"
+                   HorizontalAlignment="Right"
+                   Foreground="WhiteSmoke"
+                   FontWeight="Bold"
+                   FontSize="22"/>
 
             <!--    Row 1  -->
             <StackPanel Grid.Row="1"
@@ -243,15 +245,44 @@
 
             <!--    Row 6   -->
             <StackPanel Grid.Row="6" Orientation="Horizontal" VerticalAlignment="Center">
-                <Label Content="NCM Code (Select One)" Foreground="WhiteSmoke" FontWeight="Bold" FontSize="22"/>
+                <Label Content="NCM" Foreground="WhiteSmoke" FontWeight="Bold" FontSize="22"/>
 
                 <ComboBox ItemsSource="{Binding Qir.NCMCodeList}"
                           SelectedValue="{Binding Qir.CurrentRevision.NCMCode}"
                           SelectedValuePath="Code"
-                          Width="800"
+                          Width="400"
                           ToolTip="Select the NCM code that best describes the defect."
                           FontWeight="Bold"
-                          FontSize="22"
+                          FontSize="20"
+                          Cursor="Hand"
+                          IsTabStop="False"
+                          Style="{DynamicResource RequiredComboBox}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}({0})  {1}">
+                                        <Binding Path="Code"/>
+                                        <Binding Path="Summary"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                    <ComboBox.Effect>
+                        <DropShadowEffect/>
+                    </ComboBox.Effect>
+                </ComboBox>
+
+                <Label Content="Type" Foreground="WhiteSmoke" FontWeight="Bold" FontSize="22" Margin="20,0,0,0"/>
+
+                <ComboBox ItemsSource="{Binding Qir.NCMCodeList}"
+                          SelectedValue="{Binding Qir.CurrentRevision.NCMCode}"
+                          SelectedValuePath="Code"
+                          Width="400"
+                          ToolTip="Select the NCM code that best describes the defect."
+                          FontWeight="Bold"
+                          FontSize="20"
                           Cursor="Hand"
                           IsTabStop="False"
                           Style="{DynamicResource RequiredComboBox}">

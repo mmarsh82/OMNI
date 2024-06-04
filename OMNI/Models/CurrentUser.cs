@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data.SqlClient;
 using System.DirectoryServices.AccountManagement;
 using System.IO;
+using System.Security.Permissions;
 
 namespace OMNI.Models
 {
@@ -204,6 +205,17 @@ namespace OMNI.Models
         {
             var dirs = Directory.GetFiles(Properties.Settings.Default.UsersPhotoDirectory, $"{FullName}*.*", SearchOption.AllDirectories);
             return dirs.Length > 0 ? dirs[0] : string.Empty;
+        }
+
+        public static string GetFullName()
+        {
+            using (PrincipalContext pc = new PrincipalContext(ContextType.Domain))
+            {
+                using (UserPrincipal up = UserPrincipal.FindByIdentity(pc, DomainName))
+                {
+                    return up.DisplayName;
+                }
+            }
         }
     }
 }
