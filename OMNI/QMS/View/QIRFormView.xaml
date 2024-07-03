@@ -382,38 +382,6 @@
                             IsEnabled="{Binding ReadOnly}"
                             Visibility="{Binding Qir.IDNumber, Converter={StaticResource QIRIDNumbertoVisConverter}}">
 
-                    <Label Content="NCM"
-                           Foreground="GhostWhite"
-                           FontWeight="Bold"
-                           FontSize="18"/>
-
-                    <ComboBox ItemsSource="{Binding Qir.NCMCodeList}"
-                              SelectedValue="{Binding Qir.CurrentRevision.NCMCode}"
-                              SelectedValuePath="Code"
-                              TextSearch.TextPath="Code"
-                              Margin="5"
-                              MinWidth="100"
-                              MaxWidth="300"
-                              ToolTip="Select or Enter the NCM code that best describes the defect."
-                              FontWeight="Bold"
-                              FontSize="16"
-                              TabIndex="0"
-                              IsEnabled="{Binding ReadOnly}"
-                              Style="{DynamicResource RequiredComboBox}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock>
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="({0})  {1}">
-                                            <Binding Path="Code"/>
-                                            <Binding Path="Summary"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-
                     <Label Content="Type"
                            Foreground="GhostWhite"
                            FontWeight="Bold"
@@ -422,12 +390,33 @@
                     <ComboBox ItemsSource="{Binding Qir.CauseList}"
                               SelectedItem="{Binding Qir.CurrentRevision.Cause}"
                               Margin="5"
-                              Width="175"
+                              Width="225"
                               ToolTip="Select or Enter the Cause"
                               FontWeight="Bold"
                               FontSize="16"
                               TabIndex="6"
                               Style="{DynamicResource RequiredComboBox}"/>
+
+                    <Label Content="NCM"
+                           Foreground="GhostWhite"
+                           FontWeight="Bold"
+                           FontSize="18"/>
+
+                    <ComboBox ItemsSource="{Binding Qir.NCMCodeList}"
+                              SelectedValue="{Binding Qir.CurrentRevision.NCMCode}"
+                              SelectedValuePath="Code"
+                              TextSearch.TextPath="Summary"
+                              DisplayMemberPath="Summary"
+                              Margin="5"
+                              MinWidth="100"
+                              MaxWidth="350"
+                              ToolTip="Select or Enter the NCM code that best describes the defect."
+                              FontWeight="Bold"
+                              FontSize="16"
+                              TabIndex="0"
+                              IsEnabled="{Binding ReadOnly}"
+                              Style="{DynamicResource RequiredComboBox}">
+                    </ComboBox>
 
                 </StackPanel>
 

@@ -168,7 +168,7 @@ namespace OMNI.Models
         public static IList<string> GetQirPICIList()
         {
             var _userList = new List<string>();
-            using (SqlCommand cmd = new SqlCommand($@"USE CONTI_MAIN; SELECT CONCAT(em.[Last_Name], ', ', em.[First_Name]) as 'PicName' FROM [dbo].[EM-INIT] em WHERE em.[Pay_Status] = 'A'", App.SqlConAsync))
+            using (SqlCommand cmd = new SqlCommand($@"USE CONTI_MAIN; SELECT CONCAT(em.[First_Name], ' ', em.[Last_Name]) as 'PicName' FROM [dbo].[EM-INIT] em WHERE em.[Pay_Status] = 'A' ORDER BY em.[First_Name]", App.SqlConAsync))
             {
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {

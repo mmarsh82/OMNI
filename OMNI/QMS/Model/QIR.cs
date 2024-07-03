@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Linq;
 using Word = Microsoft.Office.Interop.Word;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace OMNI.QMS.Model
 {
@@ -83,7 +84,12 @@ namespace OMNI.QMS.Model
         public double MaterialCost { get { return materialCost; } set { materialCost = value; OnPropertyChanged(nameof(MaterialCost)); } }
         private string uom;
         public string UOM { get { return uom; } set { uom = value; OnPropertyChanged(nameof(UOM)); } }
-        public List<string> CauseList { get { return GetQIRCauseListAsync().Result; } }
+        private List<string> causeList;
+        public List<string> CauseList
+        { 
+            get { return causeList; }
+            set { causeList = GetQIRCauseListAsync().Result; OnPropertyChanged(nameof(CauseList)); }
+        }
         public List<Supplier> SupplierList { get { return Supplier.GetSupplierListAsync().Result; } }
         public List<QIRDisposition> DispositionList { get { return QIRDisposition.GetQIRDispositionListAsync().Result; } }
         public string PIC { get; set; }
@@ -173,6 +179,7 @@ namespace OMNI.QMS.Model
             CurrentRevision = new QIRRevision(false);
             LoadM2kData = true;
             NCMCodeList = null;
+            CauseList = null;
         }
 
         /// <summary>
@@ -243,12 +250,38 @@ namespace OMNI.QMS.Model
                 NotesTable = this.GetNotesTable();
                 IsPhotosAttached = true;
                 NCMCodeList = null;
+                if (NCM.IsLegacyCode(CurrentRevision.NCMCode))
+                {
+                    NCMCodeList.Add(new NCM { Code = CurrentRevision.NCMCode, Summary = NCM.GetLegacySummary(CurrentRevision.NCMCode) });
+                }
+                CauseList = null;
+                if (IsLegacyCause(CurrentRevision.Cause))
+                {
+                    CauseList.Add(CurrentRevision.Cause);
+                }
                 LoadM2kData = true;
             }
             catch (Exception)
             {
                 return;
             }
+        }
+
+        public static bool IsLegacyCause(string description)
+        {
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand($"USE {App.DataBase}; SELECT COUNT([IDNumber]) FROM [qir_cause] WHERE [Description] = @p1", App.SqlConAsync))
+                {
+                    cmd.Parameters.AddWithValue("p1", description);
+                    return int.TryParse(cmd.ExecuteScalar().ToString(), out int i) && i > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionWindow.Show("Unhandled Exception", ex.Message, ex);
+            }
+            return false;
         }
 
         /// <summary>
@@ -260,13 +293,13 @@ namespace OMNI.QMS.Model
             var _qirCauseList = new List<string>();
             try
             {
-                using (SqlCommand cmd = new SqlCommand($"USE {App.DataBase}; SELECT * FROM [qir_cause]", App.SqlConAsync))
+                using (SqlCommand cmd = new SqlCommand($"USE {App.DataBase}; SELECT * FROM [Qir_RootCause]", App.SqlConAsync))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (await reader.ReadAsync())
                         {
-                            _qirCauseList.Add(reader.SafeGetString("Description"));
+                            _qirCauseList.Add(reader.SafeGetString("RootCauseDescription"));
                         }
                     }
                 }

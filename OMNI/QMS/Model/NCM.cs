@@ -1,10 +1,12 @@
-﻿using OMNI.Extensions;
+﻿using Microsoft.Office.Interop.Word;
+using OMNI.Extensions;
 using OMNI.Helpers;
 using OMNI.Models;
 using OMNI.QMS.Enumeration;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.DirectoryServices.ActiveDirectory;
 using System.Threading.Tasks;
 
 namespace OMNI.QMS.Model
@@ -30,17 +32,57 @@ namespace OMNI.QMS.Model
             {
                 var _ncmList = new List<NCM>();
                 using (SqlCommand cmd = new SqlCommand($@"USE {App.DataBase};
-                                                        SELECT * FROM [ncm]", App.SqlConAsync))
+                                                        SELECT * FROM [Qir_RootCategory]", App.SqlConAsync))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (await reader.ReadAsync())
                         {
-                            _ncmList.Add(new NCM { Code = reader.SafeGetInt32("NCMCode"), Summary = reader.SafeGetString(nameof(Summary)) });
+                            _ncmList.Add(new NCM { Code = reader.SafeGetInt32("CategoryID"), Summary = reader.SafeGetString("CategoryDescription") });
                         }
                     }
                 }
                 return _ncmList;
+            }
+            catch (Exception ex)
+            {
+                ExceptionWindow.Show("Unhandled Exception", ex.Message, ex);
+                return null;
+            }
+        }
+
+        public static bool IsLegacyCode(int code)
+        {
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand($@"USE {App.DataBase};
+                                                        SELECT COUNT([NCMCode]) FROM [ncm] WHERE [NCMCode] = @p1", App.SqlConAsync))
+                {
+                    cmd.Parameters.AddWithValue("p1", code);
+                    if (int.TryParse(cmd.ExecuteScalar().ToString(), out int i))
+                    {
+                        return i > 0;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionWindow.Show("Unhandled Exception", ex.Message, ex);
+                return false;
+            }
+        }
+
+        public static string GetLegacySummary(int code)
+        {
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand($@"USE {App.DataBase};
+                                                        SELECT [Summary] FROM [ncm] WHERE [NCMCode] = @p1", App.SqlConAsync))
+                {
+                    cmd.Parameters.AddWithValue("p1", code);
+                    return cmd.ExecuteScalar().ToString();
+                }
             }
             catch (Exception ex)
             {

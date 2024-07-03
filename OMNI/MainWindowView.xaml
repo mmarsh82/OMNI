@@ -154,7 +154,7 @@
                         <TextBlock Text="QIR Search" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
-                <Button Grid.Column="0" Grid.Row="1" Command="{Binding WorkSpaceCommand}" CommandParameter="QIREZ" Visibility="{Binding LoggedIn, Converter={StaticResource BooltoVisConvert}}" Margin="10" ToolTip="Submit a QIR EZ.&#10;(Ctrl+Q)" FontSize="24" Style="{DynamicResource ButtonStyle}">
+                <Button Grid.Column="0" Grid.Row="1" Command="{Binding WorkSpaceCommand}" CommandParameter="QIREZ" Visibility="Collapsed" Margin="10" ToolTip="Submit a QIR EZ.&#10;(Ctrl+Q)" FontSize="24" Style="{DynamicResource ButtonStyle}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="Icons/EZ.ico" Margin="10"/>
                         <TextBlock Text="QIR EZ" VerticalAlignment="Center"/>
