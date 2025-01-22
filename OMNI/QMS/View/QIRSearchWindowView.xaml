@@ -6,7 +6,7 @@
         xmlns:vm="clr-namespace:OMNI.QMS.ViewModel"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="QIR Search" Height="200" Width="300" Icon="/OMNI;component/Icons/QIRSearch.ico" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+        Title="SCAR Search" Height="200" Width="300" Icon="/OMNI;component/Icons/QIRSearch.ico" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
 
     <Window.DataContext>
         <vm:QIRSearchViewModel/>
@@ -18,7 +18,7 @@
 
     <Grid Style="{DynamicResource GridBackgroundStyle}">
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Label Content="QIR Number" Foreground="GhostWhite" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center"/>
+            <Label Content="SCAR Number" Foreground="GhostWhite" FontWeight="Bold" FontSize="24" HorizontalAlignment="Center"/>
             <TextBox x:Name="QIRNumber" Text="{Binding QIRNumber, Mode=TwoWay, TargetNullValue={x:Static sys:String.Empty}, UpdateSourceTrigger=PropertyChanged}" FontSize="20" FontWeight="Bold" Width="150" MaxLength="10" AcceptsReturn="False" Margin="5" Style="{DynamicResource ActiveTextBox}"/>
             <Button Content="Search" Width="150" Height="40" Margin="10" FontSize="20" Command="{Binding SearchCommand}" Style="{DynamicResource ButtonStyle}"/>
         </StackPanel>

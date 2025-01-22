@@ -12,11 +12,10 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Linq;
 using Word = Microsoft.Office.Interop.Word;
-using System.DirectoryServices.ActiveDirectory;
 
 namespace OMNI.QMS.Model
 {
@@ -88,7 +87,7 @@ namespace OMNI.QMS.Model
         public List<string> CauseList
         { 
             get { return causeList; }
-            set { causeList = GetQIRCauseListAsync().Result; OnPropertyChanged(nameof(CauseList)); }
+            set { causeList = GetQIRCauseListAsync(); OnPropertyChanged(nameof(CauseList)); }
         }
         public List<Supplier> SupplierList { get { return Supplier.GetSupplierListAsync().Result; } }
         public List<QIRDisposition> DispositionList { get { return QIRDisposition.GetQIRDispositionListAsync().Result; } }
@@ -148,6 +147,18 @@ namespace OMNI.QMS.Model
         private readonly bool IsNew = true;
         public static DateTime LastUpdate;
 
+        public bool legacy;
+        public bool IsLegacy
+        {
+            get
+            { return legacy; }
+            set
+            {
+                legacy = value;
+                OnPropertyChanged(nameof(IsLegacy));
+            }
+        }
+
         #endregion
 
         #region INotifyPropertyChanged Implementation
@@ -180,6 +191,7 @@ namespace OMNI.QMS.Model
             LoadM2kData = true;
             NCMCodeList = null;
             CauseList = null;
+            IsLegacy = false;
         }
 
         /// <summary>
@@ -250,15 +262,16 @@ namespace OMNI.QMS.Model
                 NotesTable = this.GetNotesTable();
                 IsPhotosAttached = true;
                 NCMCodeList = null;
-                if (NCM.IsLegacyCode(CurrentRevision.NCMCode))
+                if (CurrentRevision != null && NCM.IsLegacyCode(CurrentRevision.NCMCode))
                 {
                     NCMCodeList.Add(new NCM { Code = CurrentRevision.NCMCode, Summary = NCM.GetLegacySummary(CurrentRevision.NCMCode) });
                 }
                 CauseList = null;
-                if (IsLegacyCause(CurrentRevision.Cause))
+                if (CurrentRevision != null && IsLegacyCause(CurrentRevision.Cause))
                 {
                     CauseList.Add(CurrentRevision.Cause);
                 }
+                IsLegacy = !string.IsNullOrEmpty(CurrentRevision?.CauseReason) || !string.IsNullOrEmpty(CurrentRevision?.DispositionReason);
                 LoadM2kData = true;
             }
             catch (Exception)
@@ -274,7 +287,8 @@ namespace OMNI.QMS.Model
                 using (SqlCommand cmd = new SqlCommand($"USE {App.DataBase}; SELECT COUNT([IDNumber]) FROM [qir_cause] WHERE [Description] = @p1", App.SqlConAsync))
                 {
                     cmd.Parameters.AddWithValue("p1", description);
-                    return int.TryParse(cmd.ExecuteScalar().ToString(), out int i) && i > 0;
+                    var _exists = int.TryParse(cmd.ExecuteScalar().ToString(), out int i) && i > 0;
+                    return _exists && (description != "External Vendor Quality" || description != "Internal Vendor Quality");
                 }
             }
             catch (Exception ex)
@@ -288,27 +302,9 @@ namespace OMNI.QMS.Model
         /// List of QIR Causes
         /// </summary>
         /// <returns>Generated List of QIR Causes</returns>
-        public async static Task<List<string>> GetQIRCauseListAsync()
+        public static List<string> GetQIRCauseListAsync()
         {
-            var _qirCauseList = new List<string>();
-            try
-            {
-                using (SqlCommand cmd = new SqlCommand($"USE {App.DataBase}; SELECT * FROM [Qir_RootCause]", App.SqlConAsync))
-                {
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            _qirCauseList.Add(reader.SafeGetString("RootCauseDescription"));
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionWindow.Show("Unhandled Exception", ex.Message, ex);
-            }
-            return _qirCauseList;
+            return new List<string> { "External Vendor Quality", "Internal Vendor Quality" };
         }
 
         /// <summary>

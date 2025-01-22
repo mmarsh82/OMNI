@@ -421,7 +421,7 @@
                                    VerticalAlignment="Center"/>
                         </StackPanel>
 
-                        <Button Content="Create QIR"
+                        <Button Content="Create SCAR"
                                 Visibility="{Binding Quality, Converter={StaticResource BooltoVisConvert}}"
                                 FontSize="14"
                                 Width="120"

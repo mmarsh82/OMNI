@@ -147,17 +147,11 @@
                 </Grid.RowDefinitions>
 
                 <!--    Column 0    -->
-                
-                <Button Grid.Column="0" Grid.Row="0" Command="{Binding DefaultCommand}" CommandParameter="QIRSearch" Margin="10" ToolTip="Search for a QIR Document." FontSize="24" IsEnabled="{Binding DataBaseOnline}" Style="{DynamicResource ButtonStyle}">
+
+                <Button Grid.Column="0" Grid.Row="0" Command="{Binding DefaultCommand}" CommandParameter="QIRSearch" Margin="10" ToolTip="Search for a SCAR Document." FontSize="24" IsEnabled="{Binding DataBaseOnline}" Style="{DynamicResource ButtonStyle}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="Icons/QIRSearch.ico" Margin="10"/>
-                        <TextBlock Text="QIR Search" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-                <Button Grid.Column="0" Grid.Row="1" Command="{Binding WorkSpaceCommand}" CommandParameter="QIREZ" Visibility="Collapsed" Margin="10" ToolTip="Submit a QIR EZ.&#10;(Ctrl+Q)" FontSize="24" Style="{DynamicResource ButtonStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="Icons/EZ.ico" Margin="10"/>
-                        <TextBlock Text="QIR EZ" VerticalAlignment="Center"/>
+                        <TextBlock Text="SCAR Search" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
                 <Button Grid.Column="0" Grid.Row="6" Command="{Binding WorkSpaceCommand}" CommandParameter="DashBoard" Visibility="{Binding LoggedIn, Converter={StaticResource BooltoVisConvert}}" Margin="10" ToolTip="Launch Your OMNI DashBoard.&#10;(F1)" FontSize="24" IsEnabled="{Binding DataBaseOnline}" Style="{DynamicResource ButtonStyle}">
@@ -169,7 +163,7 @@
 
                 <!--    Column 1    -->
 
-                <Button Grid.Column="1" Grid.Row="0" Command="{Binding DefaultCommand}" CommandParameter="Calculators" Margin="10" ToolTip="Launch WCCO belt calculators." FontSize="24" Style="{DynamicResource ButtonStyle}">
+                <Button Grid.Column="1" Grid.Row="0" Command="{Binding DefaultCommand}" CommandParameter="Calculators" Margin="10" ToolTip="Launch belt calculators." FontSize="24" Style="{DynamicResource ButtonStyle}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="Icons/Admin.ico" Margin="10"/>
                         <TextBlock Text="Calculators" VerticalAlignment="Center"/>
@@ -178,49 +172,14 @@
 
                 <!--    Column 2    -->
 
-                <Button  Grid.Column="2" Grid.Row="0" Visibility="Collapsed" Command="{Binding DefaultCommand}" CommandParameter="DocumentIndex" Margin="10" ToolTip="Search through Published Documents." FontSize="24" IsEnabled="{Binding DataBaseOnline}" Style="{DynamicResource ButtonStyle}">
+                <Button  Grid.Column="2" Grid.Row="0" Visibility="Visible" Command="{Binding DefaultCommand}" CommandParameter="DocumentIndex" Margin="10" ToolTip="Search through Published Documents." FontSize="24" IsEnabled="{Binding DataBaseOnline}" Style="{DynamicResource ButtonStyle}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="Icons/DocumentIndex.ico" Margin="10"/>
                         <TextBlock Text="Document Index" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
-                <Button Grid.Column="2" Grid.Row="1" Visibility="Hidden" Margin="10" ToolTip="Submit a IT Ticket." FontSize="24" Style="{DynamicResource ButtonStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="Icons/IT.ico" Margin="10"/>
-                        <TextBlock Text="IT Ticket" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-
-                <!--    Column 3    -->
-
-                <Button Grid.Column="3" Grid.Row="0" Visibility="Collapsed" Command="{Binding DefaultCommand}" CommandParameter="PartSearch" Margin="10" ToolTip="Search for a Part's Print." FontSize="24" Style="{DynamicResource ButtonStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="Icons/PartSearch.ico" Margin="10"/>
-                        <TextBlock Text="Print Search" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-                <Button Grid.Column="3" Grid.Row="1" Visibility="Collapsed" Command="{Binding DefaultCommand}" CommandParameter="PlateSearch" Margin="10" ToolTip="Search for Extruder plates." IsEnabled="{Binding DataBaseOnline}" FontSize="24" Style="{DynamicResource ButtonStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="Icons/PlateSearch.ico" Margin="10"/>
-                        <TextBlock Text="Plate Search" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-                <Button Grid.Column="3" Grid.Row="1" Visibility="Hidden" Margin="10" ToolTip="Submit a Kaizen." FontSize="24" Style="{DynamicResource ButtonStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="Icons/Kaizen.ico" Margin="10"/>
-                        <TextBlock Text="Kaizen" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
-                <Button Grid.Column="3" Grid.Row="2" Command="{Binding DefaultCommand}"
-                        CommandParameter="LotSearch"
-                        Margin="10"
-                        ToolTip="Get details about items with the Lot Number"
-                        Visibility="Collapsed" IsEnabled="{Binding DataBaseOnline}" FontSize="24" Style="{DynamicResource ButtonStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="Icons/Deviation.ico" Margin="10"/>
-                        <TextBlock Text="Lot Search" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
+         
+                <!--    Column 3 (Empty)   -->
 
                 <Label Visibility="{Binding Training, Converter={StaticResource BooltoVisConvert}, Mode=OneWay}"
                        Grid.ColumnSpan="2"

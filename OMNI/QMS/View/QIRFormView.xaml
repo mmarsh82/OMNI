@@ -49,17 +49,17 @@
                     Style="{DynamicResource HeaderButtonStyle}">
                     <Button.ToolTip>
                         <ToolTip Content="{Binding CommandType}"
-                             ContentStringFormat="{}{0} QIR.&#xA;(Enter)"/>
+                             ContentStringFormat="{}{0} SCAR.&#xA;(Enter)"/>
                     </Button.ToolTip>
                 </Button>
 
                 <Button Content="Attach Photo"
                     Command="{Binding AttachPhotoICommand}"
-                    ToolTip="Update or create a photo page linked to this QIR.&#xA;Only 1 photo page can be linked to a single QIR&#xA;(Alt+A)"
+                    ToolTip="Update or create a photo page linked to this SCAR.&#xA;Only 1 photo page can be linked to a single SCAR&#xA;(Alt+A)"
                     Style="{DynamicResource HeaderButtonStyle}"/>
 
                 <Button Content="Add Note"
-                    ToolTip="Attach a note to this QIR.&#xA;All notes are automatically dated and signed by you.&#xA;(Alt+S)"
+                    ToolTip="Attach a note to this SCAR.&#xA;All notes are automatically dated and signed by you.&#xA;(Alt+S)"
                     Command="{Binding AddNoteICommand}"
                     Style="{DynamicResource HeaderButtonStyle}"/>
 
@@ -67,7 +67,7 @@
                     <MenuItem Header="Link Form"
                           Width="100"
                           Height="30"
-                          ToolTip="Link this form to another form of any type."
+                          ToolTip="Link this SCAR to a different SCAR."
                           Style="{DynamicResource HeaderMenuItemStyle}">
 
                         <MenuItem Header="New Link"
@@ -76,7 +76,7 @@
                               Command="{StaticResource NewLinkCommand}"/>
                         <Separator/>
                         <MenuItem Header="Delete Link"
-                              ToolTip="Delete any links this form has."
+                              ToolTip="Delete any from links."
                               CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:QIRFormView}}}"
                               Command="{StaticResource DeleteLinkCommand}"/>
 
@@ -157,17 +157,17 @@
                         HorizontalAlignment="Center"
                         Visibility="{Binding Qir.IDNumber, ConverterParameter=ID, Converter={StaticResource QIRIDNumbertoVisConverter}}">
 
-                    <Label Content="Quality Incident Report (QIR) #"
+                    <Label Content="Supplier Corrective Action Request (SCAR) #"
                        Foreground="Black"
                        FontWeight="Bold"
                        FontSize="24"/>
 
                     <TextBox Text="{Binding TempID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          FontSize="20"
-                         Width="150"
+                         Width="120"
                          Margin="5"
                          TabIndex="13"
-                         ToolTip="Enter the QIR to load."
+                         ToolTip="Enter the SCAR to load."
                          IsEnabled="{Binding TempID}"
                          Style="{DynamicResource RequiredActiveTextBox}"/>
 
@@ -188,7 +188,7 @@
                     <Label Content="{Binding Qir.CurrentRevision.RevSubmitter}"
                        Foreground="Black"
                        FontWeight="Bold"
-                       FontSize="20"/>
+                       FontSize="18"/>
 
                     <Label Content="Submitted:"
                        Margin="10,0,0,0"
@@ -199,22 +199,7 @@
                     <Label Content="{Binding Qir.CurrentRevision.RevDate}"
                        Foreground="Black"
                        FontWeight="Bold"
-                       FontSize="20"/>
-
-                    <Label Content="Shift"
-                       Margin="10,0,0,0"
-                       Foreground="WhiteSmoke"
-                       FontWeight="Bold"
                        FontSize="18"/>
-
-                    <TextBox Text="{Binding Qir.CurrentRevision.Shift, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         FontSize="16"
-                         Width="50"
-                         Margin="5"
-                         MaxLength="1"
-                         AcceptsReturn="False"
-                         ToolTip="Enter the shift&#xA;(ONLY accepts 1,2,3)"
-                         Style="{DynamicResource RequiredActiveTextBox}"/>
 
                 </StackPanel>
 
@@ -673,7 +658,7 @@
                         IsEnabled="{Binding ReadOnly}"
                         Visibility="{Binding Qir.IDNumber, Converter={StaticResource QIRIDNumbertoVisConverter}}">
 
-                    <Label Content="Problem / Non-Conformance"
+                    <Label Content="Defect description"
                        Foreground="GhostWhite"
                        FontWeight="Bold"
                        FontSize="18"/>
@@ -720,8 +705,13 @@
                             Orientation="Horizontal"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            IsEnabled="{Binding ReadOnly}"
-                            Visibility="{Binding Qir.IDNumber, Converter={StaticResource QIRIDNumbertoVisConverter}}">
+                            IsEnabled="{Binding ReadOnly}">
+                    <StackPanel.Visibility>
+                        <MultiBinding Converter="{StaticResource QIRIDNumbertoVisConverter}">
+                            <Binding Path="Qir.IDNumber"/>
+                            <Binding Path="Qir.IsLegacy"/>
+                        </MultiBinding>
+                    </StackPanel.Visibility>
 
                     <Label Content="Cause of Non-Conformance"
                            Foreground="GhostWhite"
@@ -742,8 +732,13 @@
                             Orientation="Horizontal"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            IsEnabled="{Binding ReadOnly}"
-                            Visibility="{Binding Qir.IDNumber, Converter={StaticResource QIRIDNumbertoVisConverter}}">
+                            IsEnabled="{Binding ReadOnly}">
+                    <StackPanel.Visibility>
+                        <MultiBinding Converter="{StaticResource QIRIDNumbertoVisConverter}">
+                            <Binding Path="Qir.IDNumber"/>
+                            <Binding Path="Qir.IsLegacy"/>
+                        </MultiBinding>
+                    </StackPanel.Visibility>
 
                     <TextBox x:Name="CauseReason"
                              Text="{Binding Qir.CurrentRevision.CauseReason, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -768,8 +763,13 @@
                             Orientation="Horizontal"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            IsEnabled="{Binding ReadOnly}"
-                            Visibility="{Binding Qir.IDNumber, Converter={StaticResource QIRIDNumbertoVisConverter}}">
+                            IsEnabled="{Binding ReadOnly}">
+                    <StackPanel.Visibility>
+                        <MultiBinding Converter="{StaticResource QIRIDNumbertoVisConverter}">
+                            <Binding Path="Qir.IDNumber"/>
+                            <Binding Path="Qir.IsLegacy"/>
+                        </MultiBinding>
+                    </StackPanel.Visibility>
 
                     <Label Content="Quality Status"
                            Foreground="GhostWhite"
@@ -789,8 +789,13 @@
                 <StackPanel Grid.Row="14"
                             Orientation="Horizontal"
                             HorizontalAlignment="Center"
-                            IsEnabled="{Binding ReadOnly}"
-                            Visibility="{Binding Qir.IDNumber, Converter={StaticResource QIRIDNumbertoVisConverter}}">
+                            IsEnabled="{Binding ReadOnly}">
+                    <StackPanel.Visibility>
+                        <MultiBinding Converter="{StaticResource QIRIDNumbertoVisConverter}">
+                            <Binding Path="Qir.IDNumber"/>
+                            <Binding Path="Qir.IsLegacy"/>
+                        </MultiBinding>
+                    </StackPanel.Visibility>
 
                     <TextBox x:Name="DispoReason"
                              Text="{Binding Qir.CurrentRevision.DispositionReason, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

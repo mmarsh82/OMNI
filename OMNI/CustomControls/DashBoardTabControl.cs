@@ -329,7 +329,7 @@ namespace OMNI.CustomControls
         {
             get
             {
-                return new TabItem { Header = "New QIR", Content = new QIRFormView { DataContext = new QMS.ViewModel.QIRFormViewModel() } as UserControl };
+                return new TabItem { Header = "New SCAR", Content = new QIRFormView { DataContext = new QMS.ViewModel.QIRFormViewModel() } as UserControl };
             }
         }
 
@@ -353,7 +353,7 @@ namespace OMNI.CustomControls
         /// <param name="idNumber">QIR ID Number</param>
         public static TabItem LoadQIR(int? idNumber)
         {
-            return new TabItem { Header = $"QIR {idNumber}", Content = new QIRFormView { DataContext = new QIRFormViewModel(new QMS.Model.QIR(idNumber, true)) } as UserControl };
+            return new TabItem { Header = $"SCAR {idNumber}", Content = new QIRFormView { DataContext = new QIRFormViewModel(new QMS.Model.QIR(idNumber, true)) } as UserControl };
         }
 
         #endregion

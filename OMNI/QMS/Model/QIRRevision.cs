@@ -15,7 +15,7 @@ namespace OMNI.QMS.Model
         public string RevNumber { get; set; }
         public DateTime RevDate { get; set; }
         public string RevSubmitter { get; set; }
-        public int Shift { get; set; }
+        public int Shift { get { return 1; } }
         public string LotNumber { get; set; }
         private string diamondNumber;
         public string DiamondNumber { get { return diamondNumber; } set { diamondNumber = value; OnPropertyChanged(nameof(DiamondNumber)); } }
@@ -55,7 +55,6 @@ namespace OMNI.QMS.Model
         {
             RevSubmitter = CurrentUser.FullName;
             RevDate = DateTime.Now;
-            Shift = RevDate.Hour >= 7 && RevDate.Hour < 15 ? 1 : RevDate.Hour >= 15 && RevDate.Hour < 23 ? 2 : 3;
             if (qirEZ)
             {
                 Cause = "Method";
@@ -88,7 +87,6 @@ namespace OMNI.QMS.Model
                                 RevNumber = reader.SafeGetString("revision_id"),
                                 RevDate = reader.SafeGetDateTime("revision_date"),
                                 RevSubmitter = reader.SafeGetString("revision_submitter"),
-                                Shift = reader.SafeGetInt32(nameof(Shift)),
                                 LotNumber = !reader.IsDBNull(6) ? reader.SafeGetString(nameof(LotNumber)) : string.Empty,
                                 DiamondNumber = !reader.IsDBNull(7) ? reader.SafeGetString(nameof(DiamondNumber)) : string.Empty,
                                 NCMCode = reader.SafeGetInt32(nameof(NCMCode)),
@@ -136,7 +134,6 @@ namespace OMNI.QMS.Model
                                 RevNumber = revID,
                                 RevDate = reader.SafeGetDateTime("revision_date"),
                                 RevSubmitter = reader.SafeGetString("revision_submitter"),
-                                Shift = reader.SafeGetInt32(nameof(Shift)),
                                 LotNumber = !reader.IsDBNull(6) ? reader.SafeGetString(nameof(LotNumber)) : string.Empty,
                                 DiamondNumber = !reader.IsDBNull(7) ? reader.SafeGetString(nameof(DiamondNumber)) : string.Empty,
                                 NCMCode = reader.SafeGetInt32(nameof(NCMCode)),
@@ -212,8 +209,8 @@ namespace OMNI.QMS.Model
                     cmd.Parameters.AddWithValue("p12", rev.SupplierID);
                     cmd.Parameters.AddWithValue("p13", rev.Disposition.Description);
                     cmd.SafeAddParameters("p14", rev.Problem);
-                    cmd.SafeAddParameters("p15", rev.CauseReason);
-                    cmd.SafeAddParameters("p16", rev.DispositionReason);
+                    cmd.SafeAddParameters("p15", string.IsNullOrEmpty(rev.CauseReason) ? "" : rev.CauseReason);
+                    cmd.SafeAddParameters("p16", string.IsNullOrEmpty(rev.DispositionReason) ? "" : rev.DispositionReason);
                     cmd.ExecuteNonQuery();
                 }
                 rev.RevNumber = rev.RevDate.ToString($"yyyyMMMdd-{_increment}");
